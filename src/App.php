@@ -19,7 +19,7 @@ class App {
     ];
 
 
-	public function __construct (array $routes, array $config) {
+    public function __construct (array $routes, array $config) {
 
 
         $this->router = new Router ();
