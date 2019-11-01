@@ -1,0 +1,120 @@
+
+
+<!DOCTYPE html>
+
+<html xmlns="//www.w3.org/1999/xhtml" lang="ru">
+
+<head>
+
+    <title>Тест</title>
+
+    <meta charset="utf-8">
+
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link rel="canonical" href="/" />
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/assets/style.css">
+
+</head>
+
+<body>
+
+<nav class="navbar sticky-top navbar-light bg-light">
+
+    <button id="updateButton" type="button" class="btn btn-primary rounded-0 mx-auto my-1">Загрузить</button>
+
+</nav>
+
+<main class="container pt-3 pb-5">
+
+    <div class="row">
+
+        <div class="col-12">
+
+            <section id="articlesContainer"></section>
+
+        </div>
+
+    </div>
+
+</main>
+
+<nav class="navbar fixed-bottom navbar-light bg-light">
+
+    <nav class="mx-auto">
+
+        <ul id="paginatorContainer" class="pagination mb-0"></ul>
+
+    </nav>
+
+</nav>
+
+
+<aside class="modal modal-fullscreen" id="articleModalWindow" tabindex="-1" role="dialog" aria-hidden="true">
+
+    <div class="modal-dialog" role="document">
+
+        <div class="modal-content"></div>
+
+    </div>
+
+</aside>
+
+<code id="paginatorItemTemplate"><!--
+
+    <li class="page-item%active"><a class="page-link" href="#%href">%text</a></li>
+
+--></code>
+
+<code id="fullArticleTemplate"><!--
+
+
+    <div class="modal-header">
+
+        <h5 class="modal-title" id="fullModal">%title</h5>
+
+        <button type="button" class="close" data-dismiss="modal" onclick="history.back ()">
+            <span aria-hidden="true">&times;</span>
+        </button>
+
+    </div>
+
+    <div class="modal-body">%content</div>
+
+                                      --></code>
+
+<code id="shortArticleTemplate"><!--
+
+    <div class="card w-100 my-2">
+
+        <article class="card-body">
+
+            <header class="h6">
+                <a href="%url" target="_blank">%title</a>
+            </header>
+
+            <div class="mb-2">%brief</div>
+
+            <footer class="row justify-content-center">
+
+                <a href="#article/%id" class="btn btn-secondary btn-sm rounded-0">Полный текст</a>
+
+            </footer>
+
+        </div>
+
+    </div>
+
+      --></code>
+
+
+<script src="/assets/jquery-3.2.1.slim.min.js"></script>
+<script src="/assets/bootstrap-4.0.0.bundle.min.js"></script>
+<script src="/assets/script.js"></script>
+
+</body>
+</html>
