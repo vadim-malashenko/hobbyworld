@@ -342,9 +342,9 @@ window.addEventListener ('DOMContentLoaded', () => {
     App.cache = (() => {
         let items = {}
         return {
-            getItem: k => this.items [k] || false,
-            setItem: (k, v) => this.items [k] = v,
-            clear: () => this.items = {}
+            getItem: k => items [k] || false,
+            setItem: (k, v) => items [k] = v,
+            clear: () => items = {}
         }
     }) ()
 
