@@ -289,8 +289,8 @@ window.addEventListener ('DOMContentLoaded', () => {
                 modal.open (ev.detail)
             })
 
-            modal.on ('hidden.bs.modal', e => Router.go ('articles/' + page))
-            modal.on ('shown.bs.modal', e => e.target.style ['padding-right'] = '0')
+            modal.on ('hidden.bs.modal', ev => Router.go ('articles/' + page))
+            modal.on ('shown.bs.modal', ev => ev.target.style ['padding-right'] = '0')
 
             router.listen ()
             this.update ()
