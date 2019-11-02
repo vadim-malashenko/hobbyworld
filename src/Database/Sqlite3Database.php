@@ -152,9 +152,4 @@ class Sqlite3Database implements ISqlDatabase {
 
         $this->db->exec ($sql);
     }
-
-    public function d () {
-
-        var_dump ($this->sql); die;
-    }
 }
