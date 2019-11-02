@@ -7,62 +7,42 @@ namespace Hobbyworld\Http;
 class Response {
 
 
-    private $status_code;
-    private $data;
+    private $status_code = 200;
+    private $body = '';
 
     private $charset = 'utf-8';
-    private $content_type = 'text/html';
-
-    private $headers = [];
+    private $content_type = 'application/json';
 
 
-    public function __construct (int $status_code, $data = null, array $headers = null) {
+    public function __construct (int $status_code, $data = null, string $content_type = null) {
 
         $this->status_code = $status_code;
-        $this->data        = $data ?? '';
 
-        if ($headers !== null) {
+        if ($content_type !== null) {
 
-            $this->headers = $headers + $this->headers;
+            $this->content_type = $content_type;
         }
+
+        $this->body = ( ! is_string ($data)) ? json_encode ($data) : $data;
+
+        $this->sendHeaders ();
     }
 
+    public function getBody () : string {
 
-    public function setCharset (string $set) {
-
-        $this->charset = $set;
-
-        return $this;
+        return $this->body;
     }
 
-    public function setContentType (string $type) {
-
-        $this->content_type = $type;
-
-        return $this;
-    }
-
-    public function send () {
-
-        header_remove ();
+    public function sendHeaders (array $headers = []) {
 
         http_response_code ($this->status_code);
 
-        $this->headers ['Status'] = $this->status_code;
-        $this->headers ['Content-Type'] = $this->content_type . ';' . $this->charset;
+        $headers ['Status'] = $this->status_code;
+        $headers ['Content-Type'] = $this->content_type . ';' . $this->charset;
 
-        foreach ($this->headers as $headerName => $value) {
+        foreach ($headers as $headerName => $value) {
 
-            header("{$headerName}:{$value}");
+            header ("{$headerName}:{$value}");
         }
-
-        if ($this->content_type == 'application/json') {
-
-            $this->data = json_encode($this->data);
-        }
-
-        echo $this->data;
-
-        exit (0);
     }
 }

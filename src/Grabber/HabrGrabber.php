@@ -4,7 +4,7 @@
 namespace Hobbyworld\Grabber;
 
 
-class HabrGrabber {
+class HabrGrabber implements IGrabber {
 
 
     public function grab (int $timestamp, int $limit) : array {

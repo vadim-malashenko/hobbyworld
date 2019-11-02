@@ -5,71 +5,87 @@ namespace Hobbyworld;
 
 
 use Hobbyworld\Http\Request;
-use Hobbyworld\Http\Response;
 use Hobbyworld\Http\Router;
+
 use Hobbyworld\Http\NotFoundException;
+use Hobbyworld\Http\NotImplementedException;
+
+use Hobbyworld\Database\Sqlite3Database;
+use Hobbyworld\Grabber\HabrGrabber;
+
+use Hobbyworld\Controller\AbstractController;
+use Hobbyworld\Controller\AppController;
+use Hobbyworld\Controller\ErrorController;
+
+use Hobbyworld\Model\ArticlesModel;
 
 
 class App {
 
 
-    private static $config = [
-        'articles_per_page' => 0,
-        'sqlite3_db_file' => ''
-    ];
+    public static $config = null;
+
+    private $router = null;
 
 
-	public function __construct (array $routes, array $config) {
+    public static function create (array $config) : self {
 
+        self::$config = (object) $config;
+
+        return new self ();
+    }
+
+	private function __construct () {
 
         $this->router = new Router ();
+    }
+
+    public function addRoutes (array $routes) {
+
         $this->router->addRoutes ($routes);
 
-        foreach ($config as $key => $value) {
-
-            if (isset (self::$config [$key])) {
-
-                self::$config [$key] = $value;
-            }
-        }
-
-        $this->createResponse ()->send ();
+        return $this;
     }
 
 
-	public function createResponse () : Response {
+	public function createController () : AbstractController {
 
         $request = new Request ();
 
         try {
 
-            $route = $this->router->findRoute ($request);
+            $route = $this->router->getRoute ($request);
 
-            $request->setMatches($route->getMatches ());
+            $db = new Sqlite3Database (self::$config->db_file, ArticlesModel::SCHEME);
+            $grabber = new HabrGrabber ();
 
-            $className = __NAMESPACE__ . '\\Controller\\' . $route->getController ();
-            $controller = new $className ($request);
-            $action = $route->getAction();
+            $controller = AppController::factory ($request, $db, $grabber);
+            $controller->setAction ($route->getAction ());
+        }
 
-            return $controller->$action ();
+        catch (NotImplementedException $ex) {
+
+            $request->ex = $ex;
+            $controller = new ErrorController ($request);
+            $controller->setAction ('not_implemented');
         }
 
         catch (NotFoundException $ex) {
 
-            return new Response(404, $ex->getMessage());
+            $request->ex = $ex;
+            $controller = new ErrorController ($request);
+            $controller->setAction ('not_found');
         }
 
-        catch (\Exception $ex) {
+        catch (\Throwable $ex) {
 
-            return new Response (500, $ex->getMessage());
+            $request->ex = $ex;
+            $controller = new ErrorController ($request);
+            $controller->setAction ('internal_server_error');
         }
+
+        return $controller;
 	}
-
-
-    public static function __callStatic ($key, $value) {
-
-        return isset (self::$config [$key]) ? self::$config [$key] : null;
-    }
 
 
     public static function autoload (string $className) {
@@ -78,7 +94,7 @@ class App {
 
         if (strncmp (__NAMESPACE__, $className, $namespace_length) === 0) {
 
-            if (file_exists ($filePath = str_replace (['/', '\\'], '/', HOBBYWORLD_APP_DIR . '/src' . substr ($className, $namespace_length)) . '.php')) {
+            if (file_exists ($filePath = str_replace (['/', '\\'], '/', self::$config->root_dir .  '/src' . substr ($className, $namespace_length)) . '.php')) {
 
                 require $filePath;
             }

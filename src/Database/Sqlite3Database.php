@@ -19,10 +19,9 @@ class Sqlite3Database implements ISqlDatabase {
     private $sql = '';
 
 
-    public function __construct (string $file, array $scheme) {
+    public function __construct (string $file) {
 
         $this->db = new \SQLite3 ($file);
-        $this->scheme = $scheme;
     }
 
     public function __destruct () {
@@ -30,16 +29,35 @@ class Sqlite3Database implements ISqlDatabase {
         $this->db->close ();
     }
 
-    public function insert (array $items) : int {
+
+    public function create (string $table, array $scheme) {
+
+        $columns = [];
+
+        foreach ($scheme as $name => $type) {
+
+            $columns [] = "$name $type";
+        }
+
+        $columns = implode (',', $columns);
+
+        if ($this->db->exec ("CREATE TABLE IF NOT EXISTS $table ($columns)") !== false) {
+
+            $this->scheme [$table] = $scheme;
+        }
+    }
+
+    public function insert (string $table, array $items) : int {
 
         if (count ($items) == 0) {
 
             return 0;
         }
 
-        $rows = 0;
+        $scheme = $this->scheme [$table];
 
-        $columns = array_keys ($this->scheme);
+        $rows = 0;
+        $columns = array_keys ($scheme);
 
         $values = array_reduce ($columns, function ($values, $column) {
 
@@ -50,12 +68,13 @@ class Sqlite3Database implements ISqlDatabase {
 
         $values = implode (',', $values);
 
-        $st = $this->db->prepare ("INSERT INTO articles VALUES ($values)");
+        $st = $this->db->prepare ("INSERT INTO $table VALUES ($values)");
 
-        foreach ($this->scheme as $column => $type) {
+        foreach ($scheme as $column => $type) {
 
             $$column = null;
-            $st->bindParam(":$column", $$column, self::TYPE [$type]);
+
+            $st->bindParam (":$column", $$column, self::TYPE [$type]);
         }
 
         foreach ($items as $item) {
@@ -72,13 +91,11 @@ class Sqlite3Database implements ISqlDatabase {
     }
 
 
-    public function select (array $columns) : self {
+    public function select ($table, array $columns) : self {
 
-        $columns = (count ($columns) > 0)
-            ? implode (',', $columns)
-            : '*';
+        $columns = (count ($columns) > 0) ? implode (',', $columns) : '*';
 
-        $this->sql = "SELECT $columns FROM articles";
+        $this->sql = "SELECT $columns FROM $table";
 
         return $this;
     }
@@ -126,20 +143,18 @@ class Sqlite3Database implements ISqlDatabase {
 
     public function one () : array {
 
-        return (($result = $this->db->query ($this->sql)->fetchArray (SQLITE3_ASSOC)) !== false)
-            ? $result
-            : [];
-    }
+        $result = $this->db->query ($this->sql)->fetchArray (SQLITE3_ASSOC);
 
-    public function value () {
-
-        $result = $this->one ();
-
-        return array_pop ($result);
+        return ($result !== false) ? $result : [];
     }
 
     public function exec ($sql) {
 
         $this->db->exec ($sql);
+    }
+
+    public function d () {
+
+        var_dump ($this->sql); die;
     }
 }

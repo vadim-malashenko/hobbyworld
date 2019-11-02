@@ -10,6 +10,11 @@ use Hobbyworld\Database\ISqlDatabase;
 class ArticlesModel {
 
 
+    private $db;
+
+
+    const TABLE = 'articles';
+
     const SCHEME = [
         'id' => 'INT',
         'timestamp' => 'INT',
@@ -20,54 +25,58 @@ class ArticlesModel {
     ];
 
 
-    private $db;
-
-
     public function __construct (ISqlDatabase $db) {
 
         $this->db = $db;
-        $this->db->exec ('CREATE TABLE IF NOT EXISTS articles (id INT, timestamp INT, url VARCHAR, title VARCHAR, brief VARCHAR, content TEXT)');
+        $this->db->create (self::TABLE, self::SCHEME);
     }
 
 
-    public function insertArticles (array $articles) : int {
-
-        return $this->db->insert ($articles);
-    }
-
-
-    public function getArticlesCount () : int {
-
-        return intval ($this->db
-            ->select (['COUNT(*)'])
-            ->orderBy ('timestamp', 'DESC')
-            ->value ());
-    }
-
-
-    public function getArticles (int $page, int $limit) : array {
+    public function inserItems (array $articles) : int {
 
         return $this->db
-            ->select (['id', 'title', 'url', 'brief'])
+            
+            ->insert (self::TABLE, $articles);
+    }
+
+
+    public function getItemsCount () : int {
+
+        $item = $this->db
+            
+            ->select (self::TABLE, ['COUNT(*)'])
+            ->orderBy ('timestamp', 'DESC')
+            ->one ();
+
+        return $item ['COUNT(*)'];
+    }
+
+
+    public function getItems (int $page, int $limit) : array {
+
+        return $this->db
+            
+            ->select (self::TABLE, ['id', 'title', 'url', 'brief'])
             ->orderBy ('timestamp')
             ->limit (($page - 1) * $limit . ',' . $limit)
             ->all ();
     }
 
-    public function getArticle (int $id) : array {
+    public function getItem (int $id) : array {
 
-        return $this->db
-            ->select (['title', 'content'])
-            ->where ('id', '=', $id)
-            ->one ();
-    }
+        return ($id > 0)
 
+            ? $this->db
 
-    public function getLastArticleTimestamp () : int {
+                ->select (self::TABLE, ['title', 'content'])
+                ->where ('id', '=', $id)
+                ->one ()
 
-        return intval ($this->db
-            ->select (['timestamp'])
-            ->orderBy ('timestamp', 'DESC')
-            ->value ());
+            : $this->db
+                
+                ->select (self::TABLE, ['*'])
+                ->orderBy ('timestamp', 'DESC')
+                ->limit (1)
+                ->one ();
     }
 }

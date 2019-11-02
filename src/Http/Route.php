@@ -7,21 +7,30 @@ namespace Hobbyworld\Http;
 class Route {
 
 
-    protected $id;
-    protected $method;
-    protected $pattern;
-    protected $controller;
+    private $method = '';
+    private $pattern = '';
 
-    protected $matches = NULL;
+    private $action = '';
+    private $matches = null;
 
 
-    public function __construct (string $id, string $method, string $pattern, string $controller, string $action) {
+    public function __construct (string $method, string $pattern) {
 
-        $this->id         = $id;
-        $this->method     = $method;
-        $this->pattern    = "#$pattern#";
-        $this->controller = $controller;
-        $this->action = $action;
+        $this->method = $method;
+
+        /*
+        if ( ! (@preg_match ("#$pattern#", '') !== false)) {
+
+            $pattern = '#\.*#';
+        }
+        */
+
+        $this->pattern = "#$pattern#";
+
+        $match = [];
+        preg_match ('#[a-z_]+#i', $pattern, $match);
+
+        $this->action = isset ($match [0]) ? $match [0] : 'index';
     }
 
 
@@ -33,23 +42,18 @@ class Route {
 
                and
 
-            preg_match ($this->pattern, $request->getPath(), $this->matches);
+            @preg_match ($this->pattern, $request->getPath(), $this->matches);
     }
 
 
-    public function getID () {
+    public function getMethod () {
 
-        return $this->id;
+        return $this->method;
     }
 
     public function getPattern () {
 
         return $this->pattern;
-    }
-
-    public function getController () {
-
-        return $this->controller;
     }
 
     public function getAction () {

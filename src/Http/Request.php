@@ -4,6 +4,9 @@
 namespace Hobbyworld\Http;
 
 
+use Hobbyworld\Http;
+
+
 class Request {
 
 
@@ -31,7 +34,9 @@ class Request {
     public function __construct () {
 
         $this->url = $_SERVER ['REQUEST_URI'];
+
         $this->method = strtoupper ($_SERVER ['REQUEST_METHOD']);
+
         $this->get = $_GET;
         $this->post = json_decode (file_get_contents ('php://input'), true);
 

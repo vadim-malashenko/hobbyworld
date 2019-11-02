@@ -4,48 +4,42 @@
 namespace Hobbyworld\Http;
 
 
+use Hobbyworld\Http;
+
+
 class Router {
 
 
     private $routes;
 
 
-    public function __construct (array $routes = null) {
-
-        $this->setRoutes($routes ?? []);
-    }
-
-
-    public function addRoute (Route $route) {
-
-        $this->routes [] = $route;
-    }
-
     public function addRoutes (array $routes) {
 
         foreach ($routes as $route) {
 
-            $this->routes [] = new Route (
-                $route [0],
-                $route [1],
-                $route [2],
-                $route [3],
-                $route [4]
-            );
+            list ($method, $pattern) = explode (' ', $route);
+
+            $this->routes [] = new Route ($method, $pattern);
         }
     }
 
-    public function findRoute (Request $request) : Route {
+    public function getRoute (Request $request) : Route {
+
+        if ( ! isset (Http::METHODS [$request->getMethod ()])) {
+
+            throw new NotImplementedException ();
+        }
 
         foreach ($this->routes as $route) {
 
-            if ($route->match($request)) {
+            if ($route->match ($request)) {
 
+                $request->setMatches ($route->getMatches ());
                 return $route;
             }
         }
 
-        throw new NotFoundException ($request->getUrl ());
+        throw new NotFoundException ();
     }
 
 
