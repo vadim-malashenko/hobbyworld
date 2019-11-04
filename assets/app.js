@@ -5,7 +5,6 @@ class App {
 
     constructor () {
 
-        let ready = false
         let page = null
 
         this.error = new Error ('error')

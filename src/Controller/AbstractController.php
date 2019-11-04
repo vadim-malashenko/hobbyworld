@@ -30,6 +30,10 @@ abstract class AbstractController {
 
 	    $action = $this->action;
 
+        if ($action != 'index' and  ! $this->request->isAjax ())
+
+            return new Response (404, '');
+
 	    try {
 
             return $this->$action ();

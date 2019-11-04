@@ -7,6 +7,7 @@ namespace Hobbyworld\Controller;
 use Hobbyworld\App;
 
 use Hobbyworld\Http\NotFoundException;
+use Hobbyworld\Http\NotImplementedException;
 use Hobbyworld\Http\Request;
 use Hobbyworld\Http\Response;
 
