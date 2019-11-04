@@ -16,21 +16,21 @@ abstract class AbstractController {
     protected $action = '';
 
 
-	public function __construct (Request $request) {
+    public function __construct (Request $request) {
 
-	    $this->request = $request;
-	}
-
-	public function setAction (string $action) {
-
-	    $this->action = $action;
+        $this->request = $request;
     }
 
-	public function createResponse () : Response {
+    public function setAction (string $action) {
 
-	    $action = $this->action;
+	$this->action = $action;
+    }
 
-	    try {
+    public function createResponse () : Response {
+
+        $action = $this->action;
+
+        try {
 
             return $this->$action ();
         }
