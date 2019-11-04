@@ -48,7 +48,8 @@
 
     <script>
         // Remove zzz.com.ua html
-        $ (document).ready (ev => [document.body.children [0], '.cbalink', '.cumf_bt_form_wrapper'].forEach (s => $ (s).remove ()))
+        if (/zzz\.com\.ua$/.test (location.host))
+            $ (document).ready (ev => [document.body.children [0], '.cbalink', '.cumf_bt_form_wrapper'].forEach (s => $ (s).remove ()))
     </script>
 
 </body>
