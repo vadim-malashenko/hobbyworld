@@ -17,7 +17,8 @@ const Items = (($) => {
 <button id="habr" type="button" class="close btn btn-image btn-link rounded-0 border-0 mx-auto"></button>`
 
     const paginator_template = /*HTML*/`
-<nav class="navbar mx-auto"><nav class="mx-auto"><ul id="paginator" class="pagination mb-0" data-size="1">%pages</ul></nav></nav>`
+<nav class="navbar mx-auto"><nav class="mx-auto"><ul id="paginator" class="pagination mb-0" data-size="1">%pages</ul></nav></nav>
+<button id="github" onclick="window.open('//github.com/vadim-malashenko/hobbyworld')" class="close btn btn-image btn-link rounded-0 border-0"></button>`
 
     const page_item_template = /*HTML*/`
 <li class="page-item%disabled%active"><a class="page-link" href="#articles/%id">%text</a></li>`

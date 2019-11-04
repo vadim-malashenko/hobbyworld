@@ -13,7 +13,7 @@ const Item = (($) => {
 
         show (item) {
 
-            this.header (item.title + close).body (item.content).open ()
+            this.header (`<b>${item.title}</b>${close}`).body (item.content).open ()
         }
     }
 
