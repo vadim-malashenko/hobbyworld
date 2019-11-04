@@ -35,7 +35,7 @@ class App {
         return new self ();
     }
 
-	private function __construct () {
+    private function __construct () {
 
         $this->router = new Router ();
     }
