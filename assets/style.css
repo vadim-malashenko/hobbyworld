@@ -1,3 +1,4 @@
+
 #error_modal {
     z-index: 9999 !important;
 }
@@ -39,8 +40,19 @@
     background-repeat:no-repeat;
 }
 
-#update:before{
+#habr:before{
     background-image : url(/assets/habr.logo.svg);
+}
+
+#github:before{
+    background-image : url(/assets/github.logo.svg);
+}
+
+#github {
+    position: fixed;
+    bottom: 1.5rem;
+    right: 1.5rem;
+    z-index: 9999;
 }
 
 .btn, .page-item.active .page-link {

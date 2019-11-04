@@ -13,8 +13,8 @@ const Items = (($) => {
   </div>
 </div>`
 
-    const close = /*HTML*/`
-<button id="update" type="button" class="close btn btn-image btn-link rounded-0 border-0 mx-auto"></button>`
+    const habr = /*HTML*/`
+<button id="habr" type="button" class="close btn btn-image btn-link rounded-0 border-0 mx-auto"></button>`
 
     const paginator_template = /*HTML*/`
 <nav class="navbar mx-auto"><nav class="mx-auto"><ul id="paginator" class="pagination mb-0" data-size="1">%pages</ul></nav></nav>`
@@ -45,7 +45,7 @@ const Items = (($) => {
             else
                 items = this.items
 
-            this.header (close).body ('')
+            this.header (habr).body ('')
 
             if (items.items.length > 0) {
 
