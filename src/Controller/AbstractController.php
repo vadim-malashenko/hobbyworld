@@ -16,25 +16,21 @@ abstract class AbstractController {
     protected $action = '';
 
 
-	public function __construct (Request $request) {
+    public function __construct (Request $request) {
 
-	    $this->request = $request;
-	}
-
-	public function setAction (string $action) {
-
-	    $this->action = $action;
+        $this->request = $request;
     }
 
-	public function createResponse () : Response {
+    public function setAction (string $action) {
 
-	    $action = $this->action;
+	$this->action = $action;
+    }
 
-        if ($action != 'index' and  ! $this->request->isAjax ())
+    public function createResponse () : Response {
 
-            return new Response (404, '');
+        $action = $this->action;
 
-	    try {
+        try {
 
             return $this->$action ();
         }

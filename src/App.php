@@ -35,7 +35,7 @@ class App {
         return new self ();
     }
 
-	private function __construct () {
+    private function __construct () {
 
         $this->router = new Router ();
     }
@@ -48,7 +48,7 @@ class App {
     }
 
 
-	public function createController () : AbstractController {
+    public function createController () : AbstractController {
 
         $request = new Request ();
 
