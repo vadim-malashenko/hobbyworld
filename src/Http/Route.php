@@ -17,14 +17,6 @@ class Route {
     public function __construct (string $method, string $pattern) {
 
         $this->method = $method;
-
-        /*
-        if ( ! (@preg_match ("#$pattern#", '') !== false)) {
-
-            $pattern = '#\.*#';
-        }
-        */
-
         $this->pattern = "#$pattern#";
 
         $match = [];

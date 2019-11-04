@@ -10,8 +10,6 @@ class Error extends Modal {
 
         let [type, text] = ('' + hash).split (': ')
 
-        console.log (this)
-
         this
             .header (type +`<button type="button" class="close" onclick="history.back ()"><span aria-hidden="true">&times;</span></button>`)
             .body (text)

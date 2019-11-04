@@ -46,5 +46,10 @@
     <script src="/assets/app/router.js"></script>
     <script src="/assets/app.js"></script>
 
+    <script>
+        // Remove zzz.com.ua html
+        $ (document).ready (ev => [document.body.children [0], '.cbalink', '.cumf_bt_form_wrapper'].forEach (s => $ (s).remove ()))
+    </script>
+
 </body>
 </html>

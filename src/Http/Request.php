@@ -14,6 +14,8 @@ class Request {
     private $url;
     private $get;
     private $post;
+    private $params;
+    private $matches;
 
     private $scheme;
     private $user;
@@ -24,33 +26,25 @@ class Request {
     private $fragment;
     private $query;
 
-    private $params;
-
     private $isAjax;
-
-    private $matches;
 
 
     public function __construct () {
 
         $this->url = $_SERVER ['REQUEST_URI'];
-
         $this->method = strtoupper ($_SERVER ['REQUEST_METHOD']);
-
         $this->get = $_GET;
         $this->post = json_decode (file_get_contents ('php://input'), true);
-
         $url_parts = parse_url ($this->url);
 
-        foreach ($url_parts as $key => $value) {
+        if ($url_parts === false)
+            $url_parts = [];
 
+        foreach ($url_parts as $key => $value)
             $this->$key = $value;
-        }
 
         $this->params = [];
-
         parse_str ($this->query, $this->params);
-
         $this->isAjax = ! empty ($_SERVER ['HTTP_X_REQUESTED_WITH']) and strtolower ($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest';
     }
 
