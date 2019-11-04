@@ -6,6 +6,7 @@ namespace Hobbyworld\Controller;
 
 use Hobbyworld\Http\Request;
 use Hobbyworld\Http\Response;
+use Hobbyworld\Http\NotFoundException;
 
 
 abstract class AbstractController {
@@ -28,6 +29,22 @@ abstract class AbstractController {
 	public function createResponse () : Response {
 
 	    $action = $this->action;
-	    return $this->$action ();
+
+	    try {
+
+            return $this->$action ();
+        }
+        catch (NotFoundException  $ex) {
+
+            $this->request->ex = $ex;
+            $controller = new ErrorController ($this->request);
+            return $controller->not_found ();
+        }
+        catch (\Exception  $ex) {
+
+            $this->request->ex = $ex;
+            $controller = new ErrorController ($this->request);
+            return $controller->internal_server_error ();
+        }
     }
 }

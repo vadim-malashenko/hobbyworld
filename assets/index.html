@@ -24,113 +24,27 @@
 
 <body>
 
-
-<nav class="navbar sticky-top navbar-light">
-
-    <a class="navbar-brand" href="//habr.com/ru/all/">
-        <svg xmlns="http://www.w3.org/2000/svg" class="icon-svg icon-svg_logo-habrahabr" width="71" height="26" viewBox="0 0 92 32"><path d="M6.827 12.278c1.273-1.735 3.304-2.848 5.595-2.848l.521.019-.023-.001c4.272 0 7.587 2.988 7.587 7.941v14.047h-6.827v-11.636c0-2.529-1.31-3.931-3.381-3.931-1.9 0-3.473 1.31-3.473 4.062v11.505h-6.827v-31.45h6.827zM46.611 31.437h-6.552v-2.319c-1.357 1.764-3.468 2.89-5.843 2.89l-.332-.007.016.001c-5.713 0-9.946-4.98-9.946-11.296s4.233-11.256 9.972-11.256l.288-.006c2.378 0 4.491 1.131 5.832 2.884l.013.018v-2.306h6.552zm-15.725-10.72c0 2.533 2.053 4.586 4.586 4.586s4.586-2.053 4.586-4.586c0-2.533-2.053-4.586-4.586-4.586s-4.586 2.053-4.586 4.586zM73.959 20.704c0 6.316-4.246 11.296-9.959 11.296l-.342.008c-2.354 0-4.446-1.116-5.778-2.848l-.013-.017v2.293h-6.552v-31.45h6.814v12.095c1.343-1.61 3.351-2.628 5.596-2.628l.329.007-.016-.001c5.674-.013 9.92 4.94 9.92 11.243zm-16.157 0c0 2.533 2.053 4.586 4.586 4.586s4.586-2.053 4.586-4.586c0-2.533-2.053-4.586-4.586-4.586s-4.586 2.053-4.586 4.586zM92.318 9.776l-.59 6.801c-1.019-.342-2.193-.547-3.412-.563h-.008c-.15-.023-.323-.036-.498-.036-1.911 0-3.459 1.549-3.459 3.459 0 .151.01.3.029.447l-.002-.017v11.571h-6.84v-21.399h6.552v2.464c1.124-1.85 3.128-3.068 5.417-3.068l.448.016-.02-.001h.022c.842 0 1.655.12 2.425.343l-.061-.015z"></path></svg>
-    </a>
-
-    <form class="form-inline">
-
-        <button id="update" type="button" class="btn btn-primary btn-lg rounded-0 border-0 mx-auto my-1">
-            <span class="spinner-border spinner-border-sm mb-1" role="status" style="display:none"></span>
-            Загрузить
-        </button>
-
-    </form>
-
-</nav>
-
-
-<main class="container-fluid">
-
-    <div class="row">
-
-        <div class="col-12">
-
-            <section id="items" data-limit="5"></section>
-
+    <div class="container d-flex" style="height:100vh">
+        <div class="row w-100 align-self-center">
+            <div class="col">
+                <div class="w-50 mx-auto">
+                    <img id="spinner" src="/assets/habr.logo.svg"/>
+                </div>
+            </div>
         </div>
-
     </div>
 
-</main>
+    <script src="//code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="//stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>
 
-
-<nav class="navbar fixed-bottom navbar-light bg-light">
-
-    <nav class="mx-auto">
-
-        <ul id="paginator" class="pagination mb-0" data-size="2"></ul>
-
-    </nav>
-
-</nav>
-
-
-<aside class="modal modal-fullscreen" id="item_modal" tabindex="-1" role="dialog" aria-hidden="true">
-
-    <div class="modal-dialog" role="document">
-
-        <div class="modal-content"></div>
-
-    </div>
-
-</aside>
-
-
-<code id="paginator_template"><!--
-
-    <li class="page-item%active"><a class="page-link" href="#%href">%text</a></li>
-
---></code>
-
-<code id="modal_template"><!--
-
-
-    <div class="modal-header">
-
-        <h5 class="modal-title" id="fullModal">%title</h5>
-
-        <button type="button" class="close" data-dismiss="modal">
-            <span aria-hidden="true">&times;</span>
-        </button>
-
-    </div>
-
-    <div class="modal-body">%content</div>
-
---></code>
-
-<code id="item_template"><!--
-
-    <div class="card w-100 my-2">
-
-        <article class="card-body">
-
-            <header class="h6">
-                <a href="%url" target="_blank">%title</a>
-            </header>
-
-            <div class="mb-2">%brief</div>
-
-            <footer>
-
-                <a href="#article/%id" class="btn btn-secondary btn-sm rounded-0 border-0">Полный текст</a>
-
-            </footer>
-
-        </div>
-
-    </div>
-
---></code>
-
-
-<script src="/assets/jquery-3.2.1.slim.min.js"></script>
-<script src="/assets/bootstrap-4.3.1.bundle.min.js"></script>
-<script src="/assets/script.js"></script>
+    <script src="/assets/app/template.js"></script>
+    <script src="/assets/app/modal.js"></script>
+    <script src="/assets/app/error.js"></script>
+    <script src="/assets/app/items.js"></script>
+    <script src="/assets/app/item.js"></script>
+    <script src="/assets/app/paginator.js"></script>
+    <script src="/assets/app/router.js"></script>
+    <script src="/assets/app.js"></script>
 
 </body>
 </html>

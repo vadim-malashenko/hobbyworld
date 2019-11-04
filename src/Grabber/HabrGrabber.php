@@ -9,6 +9,7 @@ class HabrGrabber implements IGrabber {
 
     public function grab (int $timestamp, int $limit) : array {
 
+        //throw new \Exception ('Grabber error: Something went wrong', 500);
 
         $timestamp = ($timestamp <= ($now = time ()))
             ? ($timestamp > 0)
@@ -26,15 +27,29 @@ class HabrGrabber implements IGrabber {
         $feed  = implode (file ('https://habr.com/ru/rss/all/'));
         $xml   = new \SimpleXMLElement ($feed);
 
+        function trim_tail ($s, $t) {
+
+            $b = str_split ($t);
+            $a = '';
+
+            while ($c = array_shift ($b))
+
+                if (preg_match ('#' . preg_quote ($a .= $c) . '$#', $s))
+
+                    break;
+
+            return str_replace ($a, '', $s);
+        }
+
         function content (string $url) : string {
 
             $document = new \DOMDocument ();
-            @$document->loadHTMLFile ($url);
+            @$document->loadHTMLFile($url);
             $xpath = new \DOMXPath ($document);
-            $node = $xpath->query ("//*[@id='post-content-body']") [0];
-            $html = implode (array_map ([$node->ownerDocument, 'saveHTML'], iterator_to_array ($node->childNodes)));
+            $node  = $xpath->query("//*[@id='post-content-body']") [0];
+            $html  = implode(array_map([$node->ownerDocument, 'saveHTML'], iterator_to_array($node->childNodes)));
 
-            return ($node !== NULL) ? mb_convert_encoding ($html, 'utf-8', 'auto') : '';
+            return ($node !== null) ? mb_convert_encoding($html, 'utf-8', 'auto') : '';
         }
 
         function reducer ($timestamp) {
@@ -43,14 +58,24 @@ class HabrGrabber implements IGrabber {
 
                 if ($timestamp < ($pub_date = strtotime($item->xpath('pubDate') [0]))) {
 
-                    $items [] = [
-                        'url'       => $url = (string)$item->xpath('guid') [0],
-                        'timestamp' => $pub_date,
-                        'id'        => preg_replace('#\D+#', '', $url),
-                        'title'     => $item->xpath('title') [0],
-                        'brief' => mb_substr(trim(strip_tags((string)$item->xpath('description') [0])), 0, 200, 'utf-8'),
-                        'content'   => content ($url)
-                    ];
+                    try {
+
+                        $url = $url = (string)$item->xpath('guid') [0];
+                        $id = preg_replace('#\D+#', '', $url);
+                        $title = $item->xpath('title') [0];
+                        $brief = trim_tail (mb_substr(trim(strip_tags((string)$item->xpath('description') [0])), 0, 200, 'utf-8'), ' Читать дальше →');
+                        $content = content ($url);
+
+                        $items [] = [
+                            'id'        => $id,
+                            'url'       => $url,
+                            'timestamp' => $pub_date,
+                            'title'     => $title,
+                            'brief'     => $brief,
+                            'content'   => $content
+                        ];
+                    }
+                    catch (\Exception $ex) {}
                 }
 
                 return $items;

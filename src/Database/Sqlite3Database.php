@@ -21,6 +21,8 @@ class Sqlite3Database implements ISqlDatabase {
 
     public function __construct (string $file) {
 
+        //throw new \Exception ('Database error: Something went wrong', 500);
+
         $this->db = new \SQLite3 ($file);
     }
 

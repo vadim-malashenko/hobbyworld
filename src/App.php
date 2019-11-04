@@ -77,7 +77,7 @@ class App {
             $controller->setAction ('not_found');
         }
 
-        catch (\Throwable $ex) {
+        catch (\Exception $ex) {
 
             $request->ex = $ex;
             $controller = new ErrorController ($request);

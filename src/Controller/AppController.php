@@ -6,6 +6,7 @@ namespace Hobbyworld\Controller;
 
 use Hobbyworld\App;
 
+use Hobbyworld\Http\NotFoundException;
 use Hobbyworld\Http\Request;
 use Hobbyworld\Http\Response;
 
@@ -62,6 +63,10 @@ class AppController extends AbstractController {
         $id = intval (str_replace ('/item/', '', $this->request->getMatches (0)));
         $model = new ArticlesModel ($this->db);
         $item = $model->getItem ($id);
+
+        if ( ! isset ($item ['id']))
+
+            throw new NotFoundException ('Not found: article/' . $id);
 
         return new Response (200, $item);
     }

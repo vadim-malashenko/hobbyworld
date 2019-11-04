@@ -68,7 +68,7 @@ class ArticlesModel {
 
             ? $this->db
 
-                ->select (self::TABLE, ['title', 'content'])
+                ->select (self::TABLE, ['id', 'title', 'content'])
                 ->where ('id', '=', $id)
                 ->one ()
 

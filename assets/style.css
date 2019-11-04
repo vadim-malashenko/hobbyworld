@@ -1,3 +1,7 @@
+#error_modal {
+    z-index: 9999 !important;
+}
+
 .modal.modal-fullscreen .modal-dialog {
     width: 100%;
     height: 100%;
@@ -23,14 +27,39 @@
     max-height: 100%;
 }
 
-.navbar {
-    background-color: #f7f7f7
+.btn-image:before {
+    content: "";
+    width: 72px;
+    height: 36px;
+    display: inline-block;
+    margin-right: 5px;
+    vertical-align: text-top;
+    background-color: transparent;
+    background-position : center center;
+    background-repeat:no-repeat;
+}
+
+#update:before{
+    background-image : url(/assets/habr.logo.svg);
 }
 
 .btn, .page-item.active .page-link {
     background-color: #65a3be;
+    opacity: 1;
 }
 
-main {
-    padding-bottom: 5rem;
+#spinner.animate {
+    animation: spin 1s infinite;
+}
+
+@keyframes spin{
+    0%{
+        transform:scale(1);
+    }
+    50%{
+        transform:scale(1.1);
+    }
+    100%{
+        transform:scale(1);
+    }
 }
